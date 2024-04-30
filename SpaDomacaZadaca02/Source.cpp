@@ -10,14 +10,13 @@ int VALUE_PACKER(int v, int vmax)
 	return v;
 }
 
-std::once_flag onceFlag;
-
 int main()
 {
 	
 	const int MAP_WIDTH = 80;
 	const int MAP_HEIGHT = 80;
 	const int CELL_SIZE = 10;
+
 	const sf::Vector2f CELL_VECTOR(CELL_SIZE, CELL_SIZE);
 	const int N_CELLS = MAP_WIDTH * MAP_HEIGHT;
 	int map[N_CELLS] = {};
@@ -32,13 +31,40 @@ int main()
 		map[i] = (get_rnd(1, 4) == 1) ? 1 : 0; //ovo je 25% jer 25% puta budemo pogodili vrijednost 1; a ostalih 75% budemo pogodili 2,3,4; jer (1,2,3,4 = 100%)
 
 	sf::RenderWindow window(sf::VideoMode(CELL_SIZE * MAP_WIDTH, CELL_SIZE * MAP_HEIGHT), "Game of life");
+
 	window.setFramerateLimit(60);
+
 	int current_menu_state = 0; //int preko kojeg budemo odredili lokaciju igraca u menu
+
 	//definicje svih postojecih menija preko poziva konstruktora
-	game_menu menu(window.getSize().x, window.getSize().y, "Start", "Postavke", "Modify Delay", "Izlaz", true);
-	game_menu subcategory1(window.getSize().x, window.getSize().y, "Standard Resample", "Randomise CELL RGB", "Randomise MENU font and RGB usage", "Custom Resample Chance", true);
-	game_menu subcategory2(window.getSize().x, window.getSize().y, "5 second", "2 second", "1 second", "0 second", true);
-	game_menu subcategory3(window.getSize().x, window.getSize().y, "50% chance of 1", "33% chance of 1", "25 % chance of 1", "10 % chance of 1", true);
+
+	game_menu menu(
+		window.getSize().x, window.getSize().y, 
+		"Start", 
+		"Postavke", 
+		"Modify Delay", 
+		"Izlaz", true);
+
+	game_menu subcategory1(
+		window.getSize().x, window.getSize().y, 
+		"Standard Resample", 
+		"Randomise CELL RGB", 
+		"Randomise MENU font and RGB usage", 
+		"Custom Resample Chance", true);
+
+	game_menu subcategory2(
+		window.getSize().x, window.getSize().y, 
+		"5 second", 
+		"2 second", 
+		"1 second", 
+		"0 second", true);
+
+	game_menu subcategory3(
+		window.getSize().x, window.getSize().y, 
+		"50% chance of 1", 
+		"33% chance of 1", 
+		"25 % chance of 1", 
+		"10 % chance of 1", true);
 
 	while (window.isOpen())
 	{
@@ -51,7 +77,8 @@ int main()
 			case sf::Event::KeyReleased:
 				switch (current_menu_state) 
 				{
-				case 0: //Startup meni
+				case 0: 
+					//Startup meni
 					switch (event.key.code)
 					{
 					case sf::Keyboard::Up:
@@ -83,7 +110,8 @@ int main()
 						break;
 					}
 					break;
-				case 1: //Game meni
+				case 1: 
+					//Game meni
 					if (event.key.code == sf::Keyboard::Backspace)
 					{
 						window.clear(sf::Color::Black);
@@ -91,7 +119,8 @@ int main()
 						current_menu_state = 0;
 					}
 					break;
-				case 2: //Podkategorija 1 meni
+				case 2: 
+					//Podkategorija 1 meni
 					switch (event.key.code)
 					{
 					case sf::Keyboard::BackSpace:
@@ -136,7 +165,8 @@ int main()
 						break;
 					}
 					break;
-				case 3: //Podkategorija 2 meni
+				case 3: 
+					//Podkategorija 2 meni
 					switch (event.key.code)
 					{
 					case sf::Keyboard::BackSpace:
@@ -177,7 +207,8 @@ int main()
 						break;
 					}
 					break;
-				case 4: //Podkategorija 3 meni
+				case 4: 
+					//Podkategorija 3 meni
 					switch (event.key.code)
 					{
 					case sf::Keyboard::BackSpace:
@@ -223,13 +254,15 @@ int main()
 					}
 				}
 				break;
-			case sf::Event::Closed: //ako closamo prozor
+			case sf::Event::Closed: 
+				//ako closamo prozor
 				window.close();
 				break;
 			}
 		}
 
-		switch (current_menu_state) //Logika koja odgovara natrag što treba biti displayano na prozoru ovisno o "int current_menu_state"
+		switch (current_menu_state) 
+			//Logika koja odgovara natrag što treba biti displayano na prozoru ovisno o "int current_menu_state"
 		{
 		case 0:
 			window.clear(sf::Color(rgb_menu[0], rgb_menu[1], rgb_menu[2])); 
@@ -285,7 +318,7 @@ int main()
 			subcategory3.draw(window); 
 			break;
 		}
-		window.display(); //prikazujemo igracu to što treba i ocekuje vidjeti
+		window.display(); //prikazujemo
 	}
 
 	return 0;
